@@ -34,7 +34,7 @@ public class BookRepositoryTest {
                 "https://www.google.com/",
                 "Fiksi");
 
-        Book book2 = new Book(1L,
+        Book book2 = new Book(2L,
                 "Buku 2",
                 "Penulis 2",
                 "Penerbit 2",
@@ -47,7 +47,7 @@ public class BookRepositoryTest {
                 "https://www.youtube.com/",
                 "Aksi");
 
-        Book book3 = new Book(1L,
+        Book book3 = new Book(3L,
                 "Buku 3",
                 "Penulis 3",
                 "Penerbit 3",
