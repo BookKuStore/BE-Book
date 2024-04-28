@@ -36,4 +36,10 @@ public class BookController {
         Book newBook = bookService.createBook(book);
         return new ResponseEntity<>(newBook, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public String deleteBook(@PathVariable UUID id){
+        bookService.deleteBookById(id);
+        return "success";
+    }
 }
