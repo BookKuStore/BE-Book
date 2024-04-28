@@ -29,7 +29,18 @@ public class Book {
     }
 
     public Book(Builder builder){
-
+        this.id = builder.id;
+        this.judul = builder.judul;
+        this.penulis = builder.penulis;
+        this.penerbit = builder.penerbit;
+        this.deskripsi = builder.deskripsi;
+        this.harga = builder.harga;
+        this.stok = builder.stok;
+        this.tanggal_terbit = builder.tanggal_terbit;
+        this.isbn = builder.isbn;
+        this.jumlah_halaman = builder.jumlah_halaman;
+        this.foto_cover = builder.foto_cover;
+        this.kategori = builder.kategori;
     }
 
     public static class Builder {
@@ -47,6 +58,7 @@ public class Book {
         private String kategori;
 
         public Builder() {
+            this.id = UUID.randomUUID();
         }
 
         public static Builder builder(){
@@ -54,55 +66,67 @@ public class Book {
         }
 
         public Builder setId(UUID id) {
-            return null;
+            this.id = id;
+            return this;
         }
 
         public Builder setJudul(String judul) {
-            return null;
+            this.judul = judul;
+            return this;
         }
 
         public Builder setPenulis(String penulis) {
-            return null;
+            this.penulis = penulis;
+            return this;
         }
 
         public Builder setPenerbit(String penerbit) {
-            return null;
+            this.penerbit = penerbit;
+            return this;
         }
 
         public Builder setDeskripsi(String deskripsi) {
-            return null;
+            this.deskripsi = deskripsi;
+            return this;
         }
 
         public Builder setHarga(int harga) {
-            return null;
+            this.harga = harga;
+            return this;
         }
 
         public Builder setStok(int stok) {
-            return null;
+            this.stok = stok;
+            return this;
         }
 
         public Builder setTanggalTerbit(LocalDate tanggal_terbit) {
-            return null;
+            this.tanggal_terbit = tanggal_terbit;
+            return this;
         }
 
         public Builder setIsbn(String isbn) {
-            return null;
+            this.isbn = isbn;
+            return this;
         }
 
         public Builder setJumlahHalaman(int jumlah_halaman) {
-            return null;
+            this.jumlah_halaman = jumlah_halaman;
+            return this;
         }
 
         public Builder setFotoCover(String foto_cover) {
-            return null;
+            this.foto_cover = foto_cover;
+            return this;
         }
 
         public Builder setKategori(String kategori) {
-            return null;
+            this.kategori = kategori;
+            return this;
         }
 
         public Book build() {
-            return null;
+            return new Book(this);
         }
     }
 }
