@@ -16,7 +16,10 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> getBooks(){
+    public List<Book> getBooks(String keyword){
+        if (keyword != null) {
+            return bookRepository.search(keyword);
+        }
         return bookRepository.findAll();
     }
 }

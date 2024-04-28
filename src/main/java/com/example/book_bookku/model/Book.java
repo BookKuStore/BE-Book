@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Table
+@Table(name = "buku")
 @Getter @Setter
 public class Book {
     @Id
@@ -21,24 +21,24 @@ public class Book {
             generator = "book_sequence"
     )
 
-    private Long id;
+    private Integer id;
     private String judul;
     private String penulis;
     private String penerbit;
     private String deskripsi;
     private int harga;
     private int stok;
-    private LocalDate tanggalTerbit;
-    private String ISBN;
-    private int jumlahHalaman;
-    private String fotoCover;
+    private LocalDate tanggalterbit;
+    private String isbn;
+    private int jumlahhalaman;
+    private String fotocover;
     private String kategori;
 
     public Book() {
 
     }
 
-    public Book(Long id, String judul, String penulis, String penerbit, String deskripsi, int harga, int stok, LocalDate tanggalTerbit, String ISBN, int jumlahHalaman, String fotoCover, String kategori) {
+    public Book(Integer id, String judul, String penulis, String penerbit, String deskripsi, int harga, int stok, LocalDate tanggalterbit, String isbn, int jumlahhalaman, String fotocover, String kategori) {
         this.id = id;
         this.judul = judul;
         this.penulis = penulis;
@@ -46,24 +46,29 @@ public class Book {
         this.deskripsi = deskripsi;
         this.harga = harga;
         this.stok = stok;
-        this.tanggalTerbit = tanggalTerbit;
-        this.ISBN = ISBN;
-        this.jumlahHalaman = jumlahHalaman;
-        this.fotoCover = fotoCover;
+        this.tanggalterbit = tanggalterbit;
+        this.isbn = isbn;
+        this.jumlahhalaman = jumlahhalaman;
+        this.fotocover = fotocover;
         this.kategori = kategori;
     }
 
-    public Book(String judul, String penulis, String penerbit, String deskripsi, int harga, int stok, LocalDate tanggalTerbit, String ISBN, int jumlahHalaman, String fotoCover, String kategori) {
+    public Book(String judul, String penulis, String penerbit, String deskripsi, int harga, int stok, LocalDate tanggalterbit, String isbn, int jumlahhalaman, String fotocover, String kategori) {
         this.judul = judul;
         this.penulis = penulis;
         this.penerbit = penerbit;
         this.deskripsi = deskripsi;
         this.harga = harga;
         this.stok = stok;
-        this.tanggalTerbit = tanggalTerbit;
-        this.ISBN = ISBN;
-        this.jumlahHalaman = jumlahHalaman;
-        this.fotoCover = fotoCover;
+        this.tanggalterbit = tanggalterbit;
+        this.isbn = isbn;
+        this.jumlahhalaman = jumlahhalaman;
+        this.fotocover = fotocover;
         this.kategori = kategori;
+    }
+
+    @Override
+    public String toString() {
+        return "Buku [id=" + id + ", judul=" + judul + ", penulis=" + penulis + "]";
     }
 }
