@@ -20,12 +20,15 @@ public class Book {
             strategy = GenerationType.SEQUENCE,
             generator = "book_sequence"
     )
+    private int id;
 
-    private Integer id;
     private String judul;
     private String penulis;
     private String penerbit;
+
+    @Column(columnDefinition = "TEXT")
     private String deskripsi;
+
     private int harga;
     private int stok;
     private LocalDate tanggalterbit;
@@ -67,8 +70,8 @@ public class Book {
         this.kategori = kategori;
     }
 
-    @Override
-    public String toString() {
-        return "Buku [id=" + id + ", judul=" + judul + ", penulis=" + penulis + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "Buku [id=" + id + ", judul=" + judul + ", penulis=" + penulis + "]";
+//    }
 }
