@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT b FROM Book b WHERE LOWER(CONCAT(b.judul, b.penulis)) LIKE %:keyword%")
-    List<Book> searchAll(@Param("keyword") String keyword);
+    List<Book> listAll(@Param("keyword") String keyword);
 
     @Query("SELECT b FROM Book b WHERE LOWER(b.judul) LIKE %:keyword%")
     List<Book> searchByName(@Param("keyword") String keyword);
@@ -19,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT b FROM Book b WHERE LOWER(b.penulis) LIKE %:keyword%")
     List<Book> searchByAuthor(@Param("keyword") String keyword);
 
-    @Query("SELECT b FROM Book b WHERE LOWER(b.penulis) LIKE %:keyword% ORDER BY b.harga")
-    List<Book> searchByAuthor(@Param("keyword") String keyword);
+//    @Query("SELECT b FROM Book b WHERE LOWER(b.penulis) LIKE %:keyword% ORDER BY b.harga")
+//    List<Book> searchByAuthor(@Param("keyword") String keyword);
 }
 

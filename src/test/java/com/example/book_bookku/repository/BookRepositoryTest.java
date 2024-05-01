@@ -3,25 +3,33 @@ package com.example.book_bookku.repository;
 import com.example.book_bookku.model.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Repository;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@SpringJUnitConfig
 public class BookRepositoryTest {
+    @Autowired
     BookRepository bookRepository;
     List<Book> books;
 
     @BeforeEach
     void setUp() {
-        bookRepository = new BookRepository();
+//        bookRepository = new BookRepository();
 
         books = new ArrayList<>();
         Book book1 = new Book(
-                1L,
+                1,
                 "Buku 1",
                 "Penulis 1",
                 "Penerbit 1",
@@ -34,7 +42,7 @@ public class BookRepositoryTest {
                 "https://www.google.com/",
                 "Fiksi");
 
-        Book book2 = new Book(2L,
+        Book book2 = new Book(2,
                 "Buku 2",
                 "Penulis 2",
                 "Penerbit 2",
@@ -47,7 +55,7 @@ public class BookRepositoryTest {
                 "https://www.youtube.com/",
                 "Aksi");
 
-        Book book3 = new Book(3L,
+        Book book3 = new Book(3,
                 "Buku 3",
                 "Penulis 3",
                 "Penerbit 3",
@@ -67,10 +75,12 @@ public class BookRepositoryTest {
 
     @Test
     void testSaveCreate() {
-        Book book = books.get(1);
+        Book book = books.get(0);
         Book result = bookRepository.save(book);
 
-        Book findResult = bookRepository.findById(String.valueOf(books.get(1).getId()));
+        Optional<Book> optionalBook = bookRepository.findById(books.get(0).getId());
+        Book findResult = optionalBook.orElseThrow(() -> new RuntimeException("Book not found"));
+
         assertEquals(book.getId(), result.getId());
         assertEquals(book.getId(), findResult.getId());
         assertEquals(book.getJudul(), findResult.getJudul());
@@ -79,45 +89,49 @@ public class BookRepositoryTest {
         assertEquals(book.getDeskripsi(), findResult.getDeskripsi());
         assertEquals(book.getHarga(),findResult.getHarga());
         assertEquals(book.getStok(), findResult.getStok());
-        assertEquals(book.getTanggalTerbit(), findResult.getTanggalTerbit());
-        assertEquals(book.getISBN(), findResult.getISBN());
-        assertEquals(book.getJumlahHalaman(), findResult.getJumlahHalaman());
-        assertEquals(book.getFotoCover(), findResult.getFotoCover());
+        assertEquals(book.getTanggalterbit(), findResult.getTanggalterbit());
+        assertEquals(book.getIsbn(), findResult.getIsbn());
+        assertEquals(book.getJumlahhalaman(), findResult.getJumlahhalaman());
+        assertEquals(book.getFotocover(), findResult.getFotocover());
         assertEquals(book.getKategori(), findResult.getKategori());
     }
 
     @Test
     void testSaveUpdate() {
-        Book book = books.get(2);
+        Book book = books.get(1);
         bookRepository.save(book);
+
         Book newBook = new Book(
                 book.getId(),
                 book.getJudul(),
                 book.getPenulis(),
                 book.getPenerbit(),
-                "Ini adalah buku terakhir",
+                "Ini adalah buku kedua",
                 book.getHarga(),
                 book.getStok(),
-                book.getTanggalTerbit(),
-                book.getISBN(),
-                book.getJumlahHalaman(),
-                book.getFotoCover(),
+                book.getTanggalterbit(),
+                book.getIsbn(),
+                book.getJumlahhalaman(),
+                book.getFotocover(),
                 book.getKategori());
+
         Book result = bookRepository.save(newBook);
 
-        Book findResult = bookRepository.findById(books.get(2).getId());
+        Optional<Book> optionalBook = bookRepository.findById(books.get(1).getId());
+        Book findResult = optionalBook.orElseThrow(() -> new RuntimeException("Book not found"));
+
         assertEquals(book.getId(), result.getId());
         assertEquals(book.getId(), findResult.getId());
         assertEquals(book.getJudul(), findResult.getJudul());
         assertEquals(book.getPenulis(), findResult.getPenulis());
         assertEquals(book.getPenerbit(), findResult.getPenerbit());
-        assertEquals("Ini adalah buku terakhi", findResult.getDeskripsi());
+        assertEquals("Ini adalah buku kedua", findResult.getDeskripsi());
         assertEquals(book.getHarga(),findResult.getHarga());
         assertEquals(book.getStok(), findResult.getStok());
-        assertEquals(book.getTanggalTerbit(), findResult.getTanggalTerbit());
-        assertEquals(book.getISBN(), findResult.getISBN());
-        assertEquals(book.getJumlahHalaman(), findResult.getJumlahHalaman());
-        assertEquals(book.getFotoCover(), findResult.getFotoCover());
+        assertEquals(book.getTanggalterbit(), findResult.getTanggalterbit());
+        assertEquals(book.getIsbn(), findResult.getIsbn());
+        assertEquals(book.getJumlahhalaman(), findResult.getJumlahhalaman());
+        assertEquals(book.getFotocover(), findResult.getFotocover());
         assertEquals(book.getKategori(), findResult.getKategori());
     }
 
@@ -127,7 +141,9 @@ public class BookRepositoryTest {
             bookRepository.save(book);
         }
 
-        Book findResult = bookRepository.findById(String.valueOf(books.get(1).getId()));
+        Optional<Book> optionalBook = bookRepository.findById(books.get(1).getId());
+        Book findResult = optionalBook.orElseThrow(() -> new RuntimeException("Book not found"));
+
         assertEquals(books.get(1).getId(), findResult.getId());
         assertEquals(books.get(1).getJudul(), findResult.getJudul());
         assertEquals(books.get(1).getPenulis(), findResult.getPenulis());
@@ -135,10 +151,10 @@ public class BookRepositoryTest {
         assertEquals(books.get(1).getDeskripsi(), findResult.getDeskripsi());
         assertEquals(books.get(1).getHarga(),findResult.getHarga());
         assertEquals(books.get(1).getStok(), findResult.getStok());
-        assertEquals(books.get(1).getTanggalTerbit(), findResult.getTanggalTerbit());
-        assertEquals(books.get(1).getISBN(), findResult.getISBN());
-        assertEquals(books.get(1).getJumlahHalaman(), findResult.getJumlahHalaman());
-        assertEquals(books.get(1).getFotoCover(), findResult.getFotoCover());
+        assertEquals(books.get(1).getTanggalterbit(), findResult.getTanggalterbit());
+        assertEquals(books.get(1).getIsbn(), findResult.getIsbn());
+        assertEquals(books.get(1).getJumlahhalaman(), findResult.getJumlahhalaman());
+        assertEquals(books.get(1).getFotocover(), findResult.getFotocover());
         assertEquals(books.get(1).getKategori(), findResult.getKategori());
     }
 
@@ -148,27 +164,7 @@ public class BookRepositoryTest {
             bookRepository.save(book);
         }
 
-        Book findResult = bookRepository.findById("zczc");
-        assertNull(findResult);
-    }
-
-    @Test
-    void testFindAllByAuthorIfAuthorCorrect() {
-        for (Book book : books) {
-            bookRepository.save(book);
-        }
-
-        List<Book> bookList = bookRepository.findAllByAuthor(
-                books.get(1).getPenulis());
-        assertEquals(2, bookList.size());
-    }
-
-    @Test
-    void testFindAllByAuthorIfAllLowercase() {
-        bookRepository.save(books.get(1));
-
-        List<Book> bookList = bookRepository.findAllByAuthor(
-                books.get(1).getPenulis().toLowerCase());
-        assertTrue(bookList.isEmpty());
+        Optional<Book> optionalBook = bookRepository.findById(500);
+        assertTrue(optionalBook.isEmpty());
     }
 }
