@@ -22,13 +22,32 @@ public class BookController {
     }
 
     @GetMapping
-    public List<Book> getBooks(){
-        return bookService.getAllBooks();
+    public ResponseEntity<List<Book>> getBooks(){
+        ResponseEntity responseEntity = null;
+
+        try {
+            List<Book> books = bookService.getAllBooks();
+            responseEntity = ResponseEntity.ok(books);
+        } catch (Exception e) {
+            System.out.println("Error in get all books!");
+            responseEntity = ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 
     @GetMapping("/{id}")
-    public Optional<Book> getBookById(@PathVariable UUID id){
-        return bookService.getBookById(id);
+    public ResponseEntity<Book> getBookById(@PathVariable UUID id){
+        ResponseEntity responseEntity = null;
+
+        try {
+            Optional<Book> books = bookService.getBookById(id);
+            responseEntity = ResponseEntity.ok(books);
+        } catch (Exception e) {
+            System.out.println("Error in getting book!");
+            responseEntity = ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+
     }
 
     @PostMapping
