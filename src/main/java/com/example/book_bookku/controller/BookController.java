@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "api/book")
+@RequestMapping(path = "book/")
 public class BookController {
     private final BookService bookService;
     private final KeywordService keywordService;
@@ -38,9 +38,12 @@ public class BookController {
         keywordService.setNextHandler(keywordWithFilterService);
     }
 
-    private void prepareSearch(String keyword, String filterBy) {
+    private void prepareSearch(String keyword, String filterBy, String sortBy, String sortDir) {
         searchAll.setKeyword(keyword);
         searchAll.setFilterBy(filterBy);
+        searchAll.setSortBy(sortBy);
+        searchAll.setSortDir(sortDir);
+
         setAllHandler();
     }
 
@@ -66,30 +69,6 @@ public class BookController {
         return "success";
     }
 
-    @GetMapping("/list-filter")
-    public List<Book> bookListWithFilterAndKeyword(Model model, @RequestParam("keyword") String keyword,
-                                                   @RequestParam("filter-by") String filterBy) {
-
-        prepareSearch(keyword, filterBy);
-
-        List<Book> bookList = searchAll.handleRequest();
-        model.addAttribute("bookList", bookList);
-        model.addAttribute("keyword", keyword);
-        model.addAttribute("filter-by", filterBy);
-        return bookList;
-    }
-
-    @GetMapping("/list-keyword")
-    public List<Book> bookListWithKeyword(Model model, @RequestParam("keyword") String keyword) {
-
-        prepareSearch(keyword, null);
-
-        List<Book> bookList = searchAll.handleRequest();
-        model.addAttribute("bookList", bookList);
-        model.addAttribute("keyword", keyword);
-        return bookList;
-    }
-
     @GetMapping("/list")
     public List<Book> bookList(Model model) {
 
@@ -97,6 +76,25 @@ public class BookController {
 
         List<Book> bookList = searchAll.handleRequest();
         model.addAttribute("bookList", bookList);
+
+        return bookList;
+    }
+
+    @GetMapping("/list-by")
+    public List<Book> bookListBy(Model model,
+                                 @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
+                                 @RequestParam(name = "filter-by", required = false, defaultValue = "") String filterBy,
+                                 @RequestParam(name = "sort-by", required = false, defaultValue = "judul") String sortBy,
+                                 @RequestParam(name = "sort-dir", required = false, defaultValue = "asc") String sortDir) {
+
+        prepareSearch(keyword, filterBy, sortBy, sortDir);
+
+        List<Book> bookList = searchAll.handleRequest();
+        model.addAttribute("bookList", bookList);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("filter-by", filterBy);
+        model.addAttribute("sort-by", sortBy);
+        model.addAttribute("sort-dir", sortDir);
 
         return bookList;
     }

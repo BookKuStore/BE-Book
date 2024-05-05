@@ -38,60 +38,27 @@ public class BookControllerTest {
     }
 
     @Test
-    void testBookListWithFilterAndKeyword() {
-        // Arrange
+    void testBookListBy() {
         String keyword = "keyword";
         String filterBy = "filterBy";
+        String sortBy = "sortBy";
+        String sortDir = "sortDir";
         List<Book> expectedBookList = new ArrayList<>();
         when(searchAllService.handleRequest()).thenReturn(expectedBookList);
 
-        // Act
-        List<Book> result = bookController.bookListWithFilterAndKeyword(model, keyword, filterBy);
+        List<Book> result = bookController.bookListBy(model, keyword, filterBy, sortBy, sortDir);
 
-        // Assert
         assertEquals(expectedBookList, result);
         verify(searchAllService).setKeyword(keyword);
         verify(searchAllService).setFilterBy(filterBy);
+        verify(searchAllService).setSortBy(sortBy);
+        verify(searchAllService).setSortDir(sortDir);
         verify(searchAllService).setNextHandler(keywordService);
         verify(keywordService).setNextHandler(keywordWithFilterService);
         verify(model).addAttribute("bookList", expectedBookList);
         verify(model).addAttribute("keyword", keyword);
         verify(model).addAttribute("filter-by", filterBy);
-    }
-
-    @Test
-    void testBookListWithKeyword() {
-        // Arrange
-        String keyword = "keyword";
-        List<Book> expectedBookList = new ArrayList<>();
-        when(searchAllService.handleRequest()).thenReturn(expectedBookList);
-
-        // Act
-        List<Book> result = bookController.bookListWithKeyword(model, keyword);
-
-        // Assert
-        assertEquals(expectedBookList, result);
-        verify(searchAllService).setKeyword(keyword);
-        verify(searchAllService).setFilterBy(null);
-        verify(searchAllService).setNextHandler(keywordService);
-        verify(keywordService).setNextHandler(keywordWithFilterService);
-        verify(model).addAttribute("bookList", expectedBookList);
-        verify(model).addAttribute("keyword", keyword);
-    }
-
-    @Test
-    void testBookList() {
-        // Arrange
-        List<Book> expectedBookList = new ArrayList<>();
-        when(searchAllService.handleRequest()).thenReturn(expectedBookList);
-
-        // Act
-        List<Book> result = bookController.bookList(model);
-
-        // Assert
-        assertEquals(expectedBookList, result);
-        verify(searchAllService).setNextHandler(keywordService);
-        verify(keywordService).setNextHandler(keywordWithFilterService);
-        verify(model).addAttribute("bookList", expectedBookList);
+        verify(model).addAttribute("sort-by", sortBy);
+        verify(model).addAttribute("sort-dir", sortDir);
     }
 }
