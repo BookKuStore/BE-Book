@@ -1,32 +1,33 @@
 package com.example.book_bookku.controller;
 
 import com.example.book_bookku.model.Book;
-import com.example.book_bookku.service.KeywordService;
-import com.example.book_bookku.service.KeywordWithFilterService;
-import com.example.book_bookku.service.SearchAllService;
+import com.example.book_bookku.service.BookService;
+import com.example.book_bookku.service.book_list_services.KeywordService;
+import com.example.book_bookku.service.book_list_services.KeywordWithFilterService;
+import com.example.book_bookku.service.book_list_services.SearchAllService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-@Controller
-@RequestMapping("/book")
+@RestController
+@RequestMapping(path = "api/book")
 public class BookController {
-
-//    @Autowired
-//    private BookService bookService;
-
+    private final BookService bookService;
     private final KeywordService keywordService;
     private final KeywordWithFilterService keywordWithFilterService;
     private final SearchAllService searchAll;
 
     @Autowired
-    public BookController(KeywordService keywordService, KeywordWithFilterService keywordWithFilterService,
-                          SearchAllService searchAll) {
+    public BookController(BookService bookService, KeywordService keywordService,
+                          KeywordWithFilterService keywordWithFilterService,
+                          SearchAllService searchAll){
+        this.bookService = bookService;
         this.keywordService = keywordService;
         this.keywordWithFilterService = keywordWithFilterService;
         this.searchAll = searchAll;
@@ -43,9 +44,31 @@ public class BookController {
         setAllHandler();
     }
 
+    @GetMapping
+    public List<Book> getBooks(){
+        return bookService.getAllBooks();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Book> getBookById(@PathVariable UUID id){
+        return bookService.getBookById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Book> createBook(@RequestBody Book book){
+        Book newBook = bookService.createBook(book);
+        return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteBook(@PathVariable UUID id){
+        bookService.deleteBookById(id);
+        return "success";
+    }
+
     @GetMapping("/list-filter")
-    public String bookListWithFilterAndKeyword(Model model, @RequestParam("keyword") String keyword,
-                               @RequestParam("filter-by") String filterBy) {
+    public List<Book> bookListWithFilterAndKeyword(Model model, @RequestParam("keyword") String keyword,
+                                                   @RequestParam("filter-by") String filterBy) {
 
         prepareSearch(keyword, filterBy);
 
@@ -53,28 +76,28 @@ public class BookController {
         model.addAttribute("bookList", bookList);
         model.addAttribute("keyword", keyword);
         model.addAttribute("filter-by", filterBy);
-        return "books/booklist";
+        return bookList;
     }
 
     @GetMapping("/list-keyword")
-    public String bookListWithKeyword(Model model, @RequestParam("keyword") String keyword) {
+    public List<Book> bookListWithKeyword(Model model, @RequestParam("keyword") String keyword) {
 
         prepareSearch(keyword, null);
 
         List<Book> bookList = searchAll.handleRequest();
         model.addAttribute("bookList", bookList);
         model.addAttribute("keyword", keyword);
-        return "books/booklist";
+        return bookList;
     }
 
     @GetMapping("/list")
-    public String bookList(Model model) {
+    public List<Book> bookList(Model model) {
 
         setAllHandler();
 
         List<Book> bookList = searchAll.handleRequest();
         model.addAttribute("bookList", bookList);
 
-        return "books/booklist";
+        return bookList;
     }
 }
