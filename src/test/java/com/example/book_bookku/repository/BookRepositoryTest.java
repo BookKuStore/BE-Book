@@ -5,10 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-<<<<<<< HEAD
-import org.springframework.stereotype.Repository;
-=======
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
@@ -16,20 +12,14 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-<<<<<<< HEAD
-=======
 import java.util.UUID;
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @SpringJUnitConfig
 public class BookRepositoryTest {
-<<<<<<< HEAD
-=======
 
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
     @Autowired
     BookRepository bookRepository;
 
@@ -37,50 +27,6 @@ public class BookRepositoryTest {
 
     @BeforeEach
     void setUp() {
-<<<<<<< HEAD
-//        bookRepository = new BookRepository();
-
-        books = new ArrayList<>();
-        Book book1 = new Book(
-                1,
-                "Buku 1",
-                "Penulis 1",
-                "Penerbit 1",
-                "Ini adalah buku pertama",
-                100000,
-                10,
-                LocalDate.of(2001, Month.APRIL, 3),
-                "1234567890123",
-                100,
-                "https://www.google.com/",
-                "Fiksi");
-
-        Book book2 = new Book(2,
-                "Buku 2",
-                "Penulis 2",
-                "Penerbit 2",
-                "Ini adalah buku kedua",
-                200000,
-                20,
-                LocalDate.of(2002, Month.APRIL, 3),
-                "1234567890234",
-                200,
-                "https://www.youtube.com/",
-                "Aksi");
-
-        Book book3 = new Book(3,
-                "Buku 3",
-                "Penulis 3",
-                "Penerbit 3",
-                "Ini adalah buku ketiga",
-                300000,
-                30,
-                LocalDate.of(2003, Month.APRIL, 3),
-                "1234567890345",
-                300,
-                "https://scele.cs.ui.ac.id/",
-                "Pendidikan");
-=======
 
         books = new ArrayList<>();
 
@@ -134,7 +80,6 @@ public class BookRepositoryTest {
                         "ef8303f56910954f5e076")
                 .setKategori("Pendidikan")
                 .build();
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
 
         books.add(book1);
         books.add(book2);
@@ -157,17 +102,10 @@ public class BookRepositoryTest {
         assertEquals(book.getDeskripsi(), findResult.getDeskripsi());
         assertEquals(book.getHarga(),findResult.getHarga());
         assertEquals(book.getStok(), findResult.getStok());
-<<<<<<< HEAD
-        assertEquals(book.getTanggalterbit(), findResult.getTanggalterbit());
-        assertEquals(book.getIsbn(), findResult.getIsbn());
-        assertEquals(book.getJumlahhalaman(), findResult.getJumlahhalaman());
-        assertEquals(book.getFotocover(), findResult.getFotocover());
-=======
         assertEquals(book.getTanggal_terbit(), findResult.getTanggal_terbit());
         assertEquals(book.getIsbn(), findResult.getIsbn());
         assertEquals(book.getJumlah_halaman(), findResult.getJumlah_halaman());
         assertEquals(book.getFoto_cover(), findResult.getFoto_cover());
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
         assertEquals(book.getKategori(), findResult.getKategori());
     }
 
@@ -176,21 +114,6 @@ public class BookRepositoryTest {
         Book book = books.get(1);
         bookRepository.save(book);
 
-<<<<<<< HEAD
-        Book newBook = new Book(
-                book.getId(),
-                book.getJudul(),
-                book.getPenulis(),
-                book.getPenerbit(),
-                "Ini adalah buku kedua",
-                book.getHarga(),
-                book.getStok(),
-                book.getTanggalterbit(),
-                book.getIsbn(),
-                book.getJumlahhalaman(),
-                book.getFotocover(),
-                book.getKategori());
-=======
         Book newBook = Book.Builder.builder()
                 .setId(book.getId())
                 .setJudul(book.getJudul())
@@ -205,7 +128,6 @@ public class BookRepositoryTest {
                 .setFotoCover(book.getFoto_cover())
                 .setKategori(book.getKategori())
                 .build();
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
 
         Book result = bookRepository.save(newBook);
 
@@ -217,15 +139,6 @@ public class BookRepositoryTest {
         assertEquals(book.getJudul(), findResult.getJudul());
         assertEquals(book.getPenulis(), findResult.getPenulis());
         assertEquals(book.getPenerbit(), findResult.getPenerbit());
-<<<<<<< HEAD
-        assertEquals("Ini adalah buku kedua", findResult.getDeskripsi());
-        assertEquals(book.getHarga(),findResult.getHarga());
-        assertEquals(book.getStok(), findResult.getStok());
-        assertEquals(book.getTanggalterbit(), findResult.getTanggalterbit());
-        assertEquals(book.getIsbn(), findResult.getIsbn());
-        assertEquals(book.getJumlahhalaman(), findResult.getJumlahhalaman());
-        assertEquals(book.getFotocover(), findResult.getFotocover());
-=======
         assertEquals("Ini adalah buku tengah", findResult.getDeskripsi());
         assertEquals(book.getHarga(),findResult.getHarga());
         assertEquals(book.getStok(), findResult.getStok());
@@ -233,7 +146,6 @@ public class BookRepositoryTest {
         assertEquals(book.getIsbn(), findResult.getIsbn());
         assertEquals(book.getJumlah_halaman(), findResult.getJumlah_halaman());
         assertEquals(book.getFoto_cover(), findResult.getFoto_cover());
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
         assertEquals(book.getKategori(), findResult.getKategori());
     }
 
@@ -253,17 +165,10 @@ public class BookRepositoryTest {
         assertEquals(books.get(1).getDeskripsi(), findResult.getDeskripsi());
         assertEquals(books.get(1).getHarga(),findResult.getHarga());
         assertEquals(books.get(1).getStok(), findResult.getStok());
-<<<<<<< HEAD
-        assertEquals(books.get(1).getTanggalterbit(), findResult.getTanggalterbit());
-        assertEquals(books.get(1).getIsbn(), findResult.getIsbn());
-        assertEquals(books.get(1).getJumlahhalaman(), findResult.getJumlahhalaman());
-        assertEquals(books.get(1).getFotocover(), findResult.getFotocover());
-=======
         assertEquals(books.get(1).getTanggal_terbit(), findResult.getTanggal_terbit());
         assertEquals(books.get(1).getIsbn(), findResult.getIsbn());
         assertEquals(books.get(1).getJumlah_halaman(), findResult.getJumlah_halaman());
         assertEquals(books.get(1).getFoto_cover(), findResult.getFoto_cover());
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
         assertEquals(books.get(1).getKategori(), findResult.getKategori());
     }
 
@@ -273,14 +178,7 @@ public class BookRepositoryTest {
             bookRepository.save(book);
         }
 
-<<<<<<< HEAD
-        Optional<Book> optionalBook = bookRepository.findById(500);
-        assertTrue(optionalBook.isEmpty());
-    }
-}
-=======
         Optional<Book> optionalBook = bookRepository.findById(UUID.fromString("3d5c8a7e-162f-4e44-bf88-6234e3a75fc7"));
         assertTrue(optionalBook.isEmpty());
     }
 }
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb

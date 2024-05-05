@@ -19,20 +19,6 @@ public class BookTest {
     public void setUp() {
 
         // Membuat objek buku baru untuk setiap pengujian
-<<<<<<< HEAD
-        book = new Book(
-                1,
-                "Judul Buku",
-                "Penulis Buku",
-                "Penerbit Buku",
-                "Deskripsi Buku",
-                20,
-                100,
-                LocalDate.now(),
-                "9780141199078",
-                279,
-                "https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-=======
         book = Book.Builder.builder()
                 .setId(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"))
                 .setJudul("Judul Buku")
@@ -45,7 +31,6 @@ public class BookTest {
                 .setIsbn("9780141199078")
                 .setJumlahHalaman(300)
                 .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
                         "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
                         "ef8303f56910954f5e076")
                 .setKategori("Fiksi")
@@ -55,32 +40,19 @@ public class BookTest {
     @Test
     public void testBookConstructorWithAllArguments() {
         // Memastikan constructor dengan semua argumen berfungsi dengan benar
-<<<<<<< HEAD
-        assertEquals(1, book.getId());
-=======
         assertEquals(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"), book.getId());
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
         assertEquals("Judul Buku", book.getJudul());
         assertEquals("Penulis Buku", book.getPenulis());
         assertEquals("Penerbit Buku", book.getPenerbit());
         assertEquals("Deskripsi Buku", book.getDeskripsi());
         assertEquals(20, book.getHarga());
         assertEquals(100, book.getStok());
-<<<<<<< HEAD
-        assertEquals(LocalDate.now(), book.getTanggalterbit());
-        assertEquals("9780141199078", book.getIsbn());
-        assertEquals(279, book.getJumlahhalaman());
-        assertEquals("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303" +
-                "f56910954f5e076", book.getFotocover());
-=======
         assertEquals(LocalDate.of(2000, Month.APRIL, 20), book.getTanggal_terbit());
         assertEquals("9780141199078", book.getIsbn());
         assertEquals(300, book.getJumlah_halaman());
         assertEquals("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
                 "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303" +
                 "f56910954f5e076", book.getFoto_cover());
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
         assertEquals("Fiksi", book.getKategori());
     }
 
@@ -107,43 +79,25 @@ public class BookTest {
         assertEquals("Deskripsi Buku", partialBook.getDeskripsi());
         assertEquals(20, partialBook.getHarga());
         assertEquals(100, partialBook.getStok());
-<<<<<<< HEAD
-        assertEquals(LocalDate.now(), partialBook.getTanggalterbit());
-        assertEquals("9780141199078", partialBook.getIsbn());
-        assertEquals(279, partialBook.getJumlahhalaman());
-        assertEquals("https://example.com/foto_cover.jpg", partialBook.getFotocover());
-=======
         assertEquals(LocalDate.of(2000, Month.APRIL, 20), partialBook.getTanggal_terbit());
         assertEquals("9780141199078", partialBook.getIsbn());
         assertEquals(300, partialBook.getJumlah_halaman());
         assertEquals("https://example.com/foto_cover.jpg", partialBook.getFoto_cover());
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
         assertEquals("Fiksi", partialBook.getKategori());
     }
 
     @Test
     public void testValidFotoCoverURL() {
         // Memeriksa apakah tautan foto cover valid
-<<<<<<< HEAD
-        assertTrue(isValidURL(book.getFotocover()));
-=======
         assertTrue(isValidURL(book.getFoto_cover()));
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
     }
 
     @Test
     public void testInvalidFotoCoverURL() {
-<<<<<<< HEAD
-        book.setFotocover("not_a_valid_url");
-
-        // Memeriksa apakah tautan foto cover tidak valid
-        assertFalse(isValidURL(book.getFotocover()));
-=======
         book.setFoto_cover("not_a_valid_url");
 
         // Memeriksa apakah tautan foto cover tidak valid
         assertFalse(isValidURL(book.getFoto_cover()));
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
     }
 
     // Metode untuk memeriksa apakah suatu string adalah URL yang valid

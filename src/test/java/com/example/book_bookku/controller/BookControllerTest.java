@@ -1,56 +1,13 @@
 package com.example.book_bookku.controller;
 
-<<<<<<< HEAD
 import com.example.book_bookku.model.Book;
-=======
 import com.example.book_bookku.service.book_list_services.KeywordService;
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
+import com.example.book_bookku.service.book_list_services.KeywordWithFilterService;
+import com.example.book_bookku.service.book_list_services.SearchAllService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-<<<<<<< HEAD
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.ui.Model;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-@SpringBootTest
-public class BookControllerTest {
-
-    @Mock
-    private KeywordService keywordService;
-    @Mock
-    private KeywordWithFilterService keywordWithFilterService;
-    @Mock
-    private SearchAllService searchAllService;
-    @Mock
-    Model model;
-    @InjectMocks
-    private BookController bookController;
-
-
-    @Test
-    public void testBookListWithFilterAndKeyword() {
-        String page = bookController.bookListWithFilterAndKeyword(model, "pen", "penulis");
-        assertEquals("books/booklist", page);
-    }
-
-    @Test
-    public void testBookListWithKeyword() {
-        String page = bookController.bookListWithKeyword(model, "pen");
-        assertEquals("books/booklist", page);
-    }
-
-    @Test
-    public void testBookList() {
-        String page = bookController.bookList(model);
-        assertEquals("books/booklist", page);
-    }
-}
-
-=======
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 import java.util.ArrayList;
@@ -138,4 +95,3 @@ public class BookControllerTest {
         verify(model).addAttribute("bookList", expectedBookList);
     }
 }
->>>>>>> 107262a05ba5f00f8964cdc87a79a672dc22e0bb
