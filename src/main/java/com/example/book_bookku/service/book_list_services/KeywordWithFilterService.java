@@ -11,11 +11,11 @@ public class KeywordWithFilterService extends BookListService {
     @Override
     public List<Book> handleRequest() {
         if (filterBy != null) {
+            setSorting();
             if (Objects.equals(filterBy, "judul")) {
-                return bookRepository.searchByTitle(keyword);
+                return bookRepository.searchByTitle(keyword, sort);
             } else if (Objects.equals(filterBy, "penulis") || Objects.equals(filterBy, "pengarang")) {
-//                System.out.println("halo");
-                return bookRepository.searchByAuthor(keyword);
+                return bookRepository.searchByAuthor(keyword, sort);
             }
         }
         return null;
