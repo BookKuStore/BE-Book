@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping(path = "api/book")
@@ -26,8 +27,8 @@ public class BookController {
         ResponseEntity responseEntity = null;
 
         try {
-            List<Book> books = bookService.getAllBooks();
-            responseEntity = ResponseEntity.ok(books);
+            CompletableFuture<List<Book>> books = bookService.getAllBooks();
+            responseEntity = ResponseEntity.ok(books.get());
         } catch (Exception e) {
             System.out.println("Error in get all books!");
             responseEntity = ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,8 +41,8 @@ public class BookController {
         ResponseEntity responseEntity = null;
 
         try {
-            Optional<Book> books = bookService.getBookById(id);
-            responseEntity = ResponseEntity.ok(books);
+            CompletableFuture<Optional<Book>> book = bookService.getBookById(id);
+            responseEntity = ResponseEntity.ok(book.get());
         } catch (Exception e) {
             System.out.println("Error in getting book!");
             responseEntity = ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);
