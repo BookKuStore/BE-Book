@@ -10,7 +10,7 @@ import java.util.Objects;
 public class KeywordService extends BookListService {
     @Override
     public List<Book> handleRequest() {
-        if (!Objects.equals(this.filterBy, null)) {
+        if (!Objects.equals(this.filterBy, "")) {
             nextHandler.setKeyword(this.keyword);
             nextHandler.setFilterBy(this.filterBy);
             nextHandler.setSortBy(this.sortBy);
