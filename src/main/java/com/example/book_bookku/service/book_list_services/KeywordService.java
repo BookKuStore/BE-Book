@@ -4,16 +4,22 @@ import com.example.book_bookku.model.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class KeywordService extends BookListService {
     @Override
     public List<Book> handleRequest() {
-        if (this.filterBy != null && !this.filterBy.isEmpty()) {
+        if (!Objects.equals(this.filterBy, "") && !this.filterBy.isEmpty()) {
             nextHandler.setKeyword(this.keyword);
             nextHandler.setFilterBy(this.filterBy);
+            nextHandler.setSortBy(this.sortBy);
+            nextHandler.setSortDir(this.sortDir);
+
             return nextHandler.handleRequest();
         }
-        return bookRepository.listAll(this.keyword);
+        setSorting();
+
+        return bookRepository.listAll(this.keyword, sort);
     }
 }
