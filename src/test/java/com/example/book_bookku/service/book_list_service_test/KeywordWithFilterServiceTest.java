@@ -134,6 +134,8 @@ public class KeywordWithFilterServiceTest {
         }
 
         keywordWithFilterService.setKeyword("");
+        keywordWithFilterService.setSortBy("");
+        keywordWithFilterService.setSortDir("");
         assertNull(keywordWithFilterService.handleRequest());
     }
 
