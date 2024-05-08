@@ -70,17 +70,6 @@ public class BookController {
     }
 
     @GetMapping("/list")
-    public List<Book> bookList(Model model) {
-
-        setAllHandler();
-
-        List<Book> bookList = searchAll.handleRequest();
-        model.addAttribute("bookList", bookList);
-
-        return bookList;
-    }
-
-    @GetMapping("/list-by")
     public List<Book> bookListBy(Model model,
                                  @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
                                  @RequestParam(name = "filter-by", required = false, defaultValue = "") String filterBy,
