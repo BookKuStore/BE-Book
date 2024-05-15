@@ -26,6 +26,9 @@ ke handler lainnya.
 Dengan menggunakan _Chain of Responsibility_, kami dapat mengatur urutan dari permintaan atau _request_ yang beragam dari 
 pengguna serta dapat memastikan bahwa setiap permintaan dapat ditangani oleh _handler_ yang ada. 
 
+### *CRUD Book Services*
+Service ini menggunakan _Builder Pattern_. Builder pattern menguntungkan kita agar saat membuat dummy objek yang tidak memiliki atribut tertentu, kita tidak perlu men-set default nilai pada classnya atau tidak perlu membuat null di atributnya. Contoh implementasinya adalah saat pembuatan test model book. Disini ada dummy book yang dibuat dengan id dan tanpa id.
+
 ## *Software Architecture*
 
 Dalam proyek ini, kami mengadopsi Arsitektur Perangkat Lunak berbasis Microservices. Kami telah memisahkan aplikasi 
