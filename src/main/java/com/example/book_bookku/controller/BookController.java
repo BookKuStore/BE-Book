@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
@@ -24,11 +22,16 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getBooks(){
+        Map<String, Object> response = new HashMap<>();
         ResponseEntity responseEntity = null;
 
         try {
             CompletableFuture<List<Book>> books = bookService.getAllBooks();
-            responseEntity = ResponseEntity.ok(books.get());
+
+            response.put("status", HttpStatus.OK);
+            response.put("message", "Success");
+            response.put("data", books.get());
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             System.out.println("Error in get all books!");
             responseEntity = ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,17 +41,21 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable UUID id){
+        Map<String, Object> response = new HashMap<>();
         ResponseEntity responseEntity = null;
 
         try {
             CompletableFuture<Optional<Book>> book = bookService.getBookById(id);
-            responseEntity = ResponseEntity.ok(book.get());
+
+            response.put("status", HttpStatus.OK);
+            response.put("message", "Success");
+            response.put("data", book.get());
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             System.out.println("Error in getting book!");
             responseEntity = ResponseEntity.badRequest().body(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
-
     }
 
     @PostMapping
@@ -60,6 +67,12 @@ public class BookController {
     @DeleteMapping("/{id}")
     public String deleteBook(@PathVariable UUID id){
         bookService.deleteBookById(id);
+        return "success";
+    }
+
+    @PostMapping("/{id}")
+    public String updateBook(@PathVariable UUID id, @RequestBody Book book){
+        Book newBook = bookService.editBook(id, book);
         return "success";
     }
 }

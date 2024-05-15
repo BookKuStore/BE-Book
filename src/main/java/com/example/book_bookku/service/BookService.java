@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,4 +42,20 @@ public class BookService {
     public void deleteBookById(UUID id){
         bookRepository.deleteById(id);
     }
+
+    public Book editBook(UUID id, Book book) {
+        Book editedBook = bookRepository.getReferenceById(id);
+        editedBook.setPenerbit(book.getPenerbit());
+        editedBook.setDeskripsi(book.getDeskripsi());
+        editedBook.setHarga(book.getHarga());
+        editedBook.setStok(book.getStok());
+        editedBook.setTanggal_terbit(book.getTanggal_terbit());
+        editedBook.setIsbn(book.getIsbn());
+        editedBook.setJumlah_halaman(book.getJumlah_halaman());
+        editedBook.setFoto_cover(book.getFoto_cover());
+        editedBook.setKategori(book.getKategori());
+
+        return bookRepository.save(editedBook);
+    }
+
 }
