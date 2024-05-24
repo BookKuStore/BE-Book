@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(path = "book/")
+@RequestMapping(path = "book")
 public class BookController {
     private final BookService bookService;
     private final KeywordService keywordService;
