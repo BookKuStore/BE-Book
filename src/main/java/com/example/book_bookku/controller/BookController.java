@@ -52,11 +52,11 @@ public class BookController {
         ResponseEntity responseEntity = null;
 
         try {
-            CompletableFuture<List<Book>> books = bookService.getAllBooks();
+            List<Book> books = bookService.getAllBooks();
 
             response.put("status", HttpStatus.OK);
             response.put("message", "Success");
-            response.put("data", books.get());
+            response.put("data", books);
             responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             System.out.println("Error in get all books!");
@@ -71,11 +71,11 @@ public class BookController {
         ResponseEntity responseEntity = null;
 
         try {
-            CompletableFuture<Optional<Book>> book = bookService.getBookById(id);
+            Optional<Book> book = bookService.getBookById(id);
 
             response.put("status", HttpStatus.OK);
             response.put("message", "Success");
-            response.put("data", book.get());
+            response.put("data", book);
             responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             System.out.println("Error in getting book!");

@@ -21,18 +21,30 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    @Async
-    public CompletableFuture<List<Book>> getAllBooks() throws InterruptedException {
+//    @Async
+//    public CompletableFuture<List<Book>> getAllBooks() throws InterruptedException {
+//        List<Book> bookList = bookRepository.findAll();
+//
+//        return CompletableFuture.completedFuture(bookList);
+//    }
+
+    public List<Book> getAllBooks() throws InterruptedException {
         List<Book> bookList = bookRepository.findAll();
 
-        return CompletableFuture.completedFuture(bookList);
+        return bookList;
     }
 
-    @Async
-    public CompletableFuture<Optional<Book>> getBookById(UUID id){
+//    @Async
+//    public CompletableFuture<Optional<Book>> getBookById(UUID id){
+//        Optional<Book> book = bookRepository.findById(id);
+//
+//        return CompletableFuture.completedFuture(book);
+//    }
+
+    public Optional<Book> getBookById(UUID id){
         Optional<Book> book = bookRepository.findById(id);
 
-        return CompletableFuture.completedFuture(book);
+        return book;
     }
 
     public Book createBook(Book book){
