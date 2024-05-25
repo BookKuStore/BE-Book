@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "book")
 public class BookController {
