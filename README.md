@@ -35,3 +35,6 @@ Service ini menggunakan _Builder Pattern_. Builder pattern menguntungkan kita ag
 Dalam proyek ini, kami mengadopsi Arsitektur Perangkat Lunak berbasis Microservices. Kami telah memisahkan aplikasi 
 kami menjadi beberapa layanan yang termasuk Layanan Pengguna & Autentikasi, Layanan Kupon, Layanan Cart & Riwayat, 
 Layanan Buku, dan Layanan Front-End.
+
+## *Deployment*
+Berikut merupakan tautan _deployment_ API Book: http://34.87.170.153/
