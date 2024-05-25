@@ -58,3 +58,9 @@ kami membagi aplikasi kami ke dalam beberapa bagian sebagai berikut,
 
 ## *Deployment*
 Berikut merupakan tautan _deployment_ API Book: http://34.87.170.153/
+
+## *Monitoring*
+Pada project ini, kami menggunakan grafana + prometheus untuk monitoring.
+
+Port untuk Grafana: http://34.126.168.228:3000/
+Port untuk Prometheus: http://34.126.168.228:9090/
