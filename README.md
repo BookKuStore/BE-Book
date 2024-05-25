@@ -32,9 +32,29 @@ Service ini menggunakan _Builder Pattern_. Builder pattern menguntungkan kita ag
 
 ## *Software Architecture*
 
-Dalam proyek ini, kami mengadopsi Arsitektur Perangkat Lunak berbasis Microservices. Kami telah memisahkan aplikasi 
-kami menjadi beberapa layanan yang termasuk Layanan Pengguna & Autentikasi, Layanan Kupon, Layanan Cart & Riwayat, 
-Layanan Buku, dan Layanan Front-End.
+_Software architecture_ merupakan perencanaan konsep yang berhubungan dalam _software development_. Ada beberapa aspek yang 
+diperhatikan oleh _software architecture_, ada aspek teknis dan nonteknis. Aspek teknis contohnya adalah fungsionalitas 
+dan kompleksitas program, skalabilitas, keamanan. Sedangkan aspek nonteknis lebih mencakup kepada sumber daya, seperti 
+ketersediaan anggaran, waktu, dan lain-lain. Ada beberapa jenis _software architecture_ contohnya adalah _microservices_ dan
+_event-driven architecture_.
+
+Pada proyek kali ini, kami menerapkan _microservices architecture_ dengan berbagai pertimbangan sebagai berikut,
+
+- Dependensi layanan menjadi minimal sehingga apabila suatu layanan mengalami kendala, kecil kemungkinannya layanan 
+lain juga akan terdampak mengalami kendala yang serupa.
+- Bagian yang sudah stabil dapat terus berkembang tanpa harus menunggu bagian lain selesai. Tim yang bertanggung jawab 
+atas bagian tertentu dapat fokus pada pengembangan dan peningkatan fitur tanpa terhambat oleh tim lain.
+- Arsitektur _microservices_ memungkinkan aplikasi untuk lebih mudah diskalakan dan dipelihara. Setiap layanan dapat 
+dikembangkan, di-_deploy_, dan diskalakan secara independen.
+
+Dengan pertimbangan-pertimbangan tersebut, microservices memberikan keuntungan signifikan dalam pengelolaan, 
+pengembangan, dan skalabilitas aplikasi dibandingkan dengan pendekatan monolitik. Dalam menerapkan arsitektur ini, 
+kami membagi aplikasi kami ke dalam beberapa bagian sebagai berikut,
+
+- _Dashboard_ admin + layanan buku (Fathan & Bimo)
+- Keranjang, _checkout_ + riwayat (Ilham)
+- _Authentication_ + _profile_ (Fadhil)
+- _Landing page_ + kupon (Zaidan)
 
 ## *Deployment*
 Berikut merupakan tautan _deployment_ API Book: http://34.87.170.153/
