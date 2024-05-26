@@ -30,18 +30,18 @@ public class Book {
     }
 
     public Book(Builder builder){
-//        this.id = builder.id;
-//        this.judul = builder.judul;
-//        this.penulis = builder.penulis;
-//        this.penerbit = builder.penerbit;
-//        this.deskripsi = builder.deskripsi;
-//        this.harga = builder.harga;
-//        this.stok = builder.stok;
-//        this.tanggal_terbit = builder.tanggal_terbit;
-//        this.isbn = builder.isbn;
-//        this.jumlah_halaman = builder.jumlah_halaman;
-//        this.foto_cover = builder.foto_cover;
-//        this.kategori = builder.kategori;
+        this.id = builder.id;
+        this.judul = builder.judul;
+        this.penulis = builder.penulis;
+        this.penerbit = builder.penerbit;
+        this.deskripsi = builder.deskripsi;
+        this.harga = builder.harga;
+        this.stok = builder.stok;
+        this.tanggal_terbit = builder.tanggal_terbit;
+        this.isbn = builder.isbn;
+        this.jumlah_halaman = builder.jumlah_halaman;
+        this.foto_cover = builder.foto_cover;
+        this.kategori = builder.kategori;
     }
 
     public static class Builder {
