@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @SpringJUnitConfig
@@ -45,9 +47,7 @@ public class KeywordWithFilterServiceTest {
                 .setTanggalTerbit(LocalDate.of(2001, Month.APRIL, 3))
                 .setIsbn("1234567890123")
                 .setJumlahHalaman(100)
-                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                        "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
-                        "ef8303f56910954f5e076")
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Fiksi")
                 .build();
 
@@ -62,9 +62,7 @@ public class KeywordWithFilterServiceTest {
                 .setTanggalTerbit(LocalDate.of(2002, Month.APRIL, 3))
                 .setIsbn("1234567890234")
                 .setJumlahHalaman(200)
-                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                        "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
-                        "ef8303f56910954f5e076")
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Petualangan")
                 .build();
 
@@ -79,37 +77,13 @@ public class KeywordWithFilterServiceTest {
                 .setTanggalTerbit(LocalDate.of(2003, Month.APRIL, 3))
                 .setIsbn("1234567890345")
                 .setJumlahHalaman(300)
-                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                        "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
-                        "ef8303f56910954f5e076")
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Pendidikan")
                 .build();
 
         books.add(book1);
         books.add(book2);
         books.add(book3);
-    }
-
-    public List<Book> listAllWithFilter(String keyword, String filterBy) {
-        List<Book> filteredBook = new ArrayList<>();
-        String lowerKey = keyword.toLowerCase();
-
-        for (Book book : books) {
-            String lowerTitle = book.getJudul().toLowerCase();
-            String lowerAuthor = book.getPenulis().toLowerCase();
-
-            if (filterBy.equalsIgnoreCase("judul")) {
-                if (lowerTitle.contains(lowerKey)) {
-                    filteredBook.add(book);
-                }
-            } else if (filterBy.equalsIgnoreCase("penulis")||
-                    filterBy.equalsIgnoreCase("pengarang")) {
-                if (lowerAuthor.contains(lowerKey)) {
-                    filteredBook.add(book);
-                }
-            }
-        }
-        return filteredBook;
     }
 
     @Test
@@ -119,62 +93,73 @@ public class KeywordWithFilterServiceTest {
 
     @Test
     void testFilterIsNull() {
-        for (Book book : books) {
-            bookRepository.save(book);
-        }
-
-        keywordWithFilterService.setFilterBy(null);
+        keywordWithFilterService.setFilterBy("");
+        keywordWithFilterService.setSortBy("judul");
+        keywordWithFilterService.setSortDir("asc");
         assertNull(keywordWithFilterService.handleRequest());
     }
 
     @Test
     void testFilterIsEmpty() {
-        for (Book book : books) {
-            bookRepository.save(book);
-        }
-
-        keywordWithFilterService.setKeyword("");
-        keywordWithFilterService.setSortBy("");
-        keywordWithFilterService.setSortDir("");
+        keywordWithFilterService.setFilterBy("");
+        keywordWithFilterService.setSortBy("judul");
+        keywordWithFilterService.setSortDir("asc");
         assertNull(keywordWithFilterService.handleRequest());
     }
 
     @Test
-    void testFilterIsValidAndKeywordIsValid() {
-        keywordWithFilterService.setKeyword("pen");
-        keywordWithFilterService.setFilterBy("pengarang");
+    void testHandleRequestWithFilterByJudul() {
+        keywordWithFilterService.setKeyword("Buku");
+        keywordWithFilterService.setFilterBy("judul");
+        keywordWithFilterService.setSortBy("judul");
+        keywordWithFilterService.setSortDir("asc");
 
-        String key = keywordWithFilterService.getKeyword();
-        String filter = keywordWithFilterService.getFilterBy();
+        when(bookRepository.searchByTitle("Buku", Sort.by("judul"))).thenReturn(books);
 
-        List<Book> actualBooks = new ArrayList<>();
-        actualBooks.add(books.get(0));
-        actualBooks.add(books.get(1));
+        List<Book> result = keywordWithFilterService.handleRequest();
+        assertEquals(books, result);
 
-        List<Book> expectedBooks = listAllWithFilter(key, filter);
-
-        assertEquals(expectedBooks, actualBooks);
+        verify(bookRepository, times(1)).searchByTitle("Buku", Sort.by("judul"));
     }
 
     @Test
-    void testFilterIsValidButKeywordIsNot() {
-        keywordWithFilterService.setKeyword("50");
+    void testHandleRequestWithFilterByPenulis() {
+        keywordWithFilterService.setKeyword("Penulis 1");
         keywordWithFilterService.setFilterBy("penulis");
+        keywordWithFilterService.setSortBy("judul");
+        keywordWithFilterService.setSortDir("asc");
 
-        String key = keywordWithFilterService.getKeyword();
-        String filter = keywordWithFilterService.getFilterBy();
+        when(bookRepository.searchByAuthor("Penulis 1", Sort.by("judul"))).thenReturn(List.of(books.get(0)));
 
-        assertTrue(listAllWithFilter(key, filter).isEmpty());
+        List<Book> result = keywordWithFilterService.handleRequest();
+        assertEquals(List.of(books.get(0)), result);
+
+        verify(bookRepository, times(1)).searchByAuthor("Penulis 1", Sort.by("judul"));
     }
 
     @Test
-    void testFilterIsNotValid() {
-        keywordWithFilterService.setKeyword("penulis");
-        keywordWithFilterService.setFilterBy("Indonesia");
+    void testHandleRequestWithFilterByPengarang() {
+        keywordWithFilterService.setKeyword("Jono 3");
+        keywordWithFilterService.setFilterBy("pengarang");
+        keywordWithFilterService.setSortBy("judul");
+        keywordWithFilterService.setSortDir("asc");
 
-        String key = keywordWithFilterService.getKeyword();
-        String filter = keywordWithFilterService.getFilterBy();
+        when(bookRepository.searchByAuthor("Jono 3", Sort.by("judul"))).thenReturn(List.of(books.get(2)));
 
-        assertTrue(listAllWithFilter(key, filter).isEmpty());
+        List<Book> result = keywordWithFilterService.handleRequest();
+        assertEquals(List.of(books.get(2)), result);
+
+        verify(bookRepository, times(1)).searchByAuthor("Jono 3", Sort.by("judul"));
+    }
+
+    @Test
+    void testHandleRequestWithInvalidFilter() {
+        keywordWithFilterService.setKeyword("Buku");
+        keywordWithFilterService.setFilterBy("invalid");
+        keywordWithFilterService.setSortBy("judul");
+        keywordWithFilterService.setSortDir("asc");
+
+        List<Book> result = keywordWithFilterService.handleRequest();
+        assertNull(result);
     }
 }
