@@ -6,7 +6,6 @@
 
 ## *Design Pattern*
 Ref: 
-- https://refactoring.guru/design-patterns/singleton
 - https://refactoring.guru/design-patterns/chain-of-responsibility
 - https://refactoring.guru/design-patterns/builder
 
