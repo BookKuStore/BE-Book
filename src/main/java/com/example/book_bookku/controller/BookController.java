@@ -5,6 +5,7 @@ import com.example.book_bookku.service.BookService;
 import com.example.book_bookku.service.book_list_services.KeywordService;
 import com.example.book_bookku.service.book_list_services.KeywordWithFilterService;
 import com.example.book_bookku.service.book_list_services.SearchAllService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -101,6 +102,15 @@ public class BookController {
     public String updateBook(@PathVariable UUID id, @RequestBody Book book){
         Book newBook = bookService.editBook(id, book);
         return "success";
+    }
+
+    @PostMapping("/buy")
+    public Book bookBought(@RequestBody ObjectNode objectNode){
+        UUID id = UUID.fromString(objectNode.get("id").asText());
+        int quantity = objectNode.get("quantity").asInt();
+
+        Book book = bookService.bookBought(id, quantity);
+        return book;
     }
 
     @GetMapping("/list")

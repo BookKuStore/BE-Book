@@ -23,6 +23,7 @@ public class Book {
     private int jumlah_halaman;
     private String foto_cover;
     private String kategori;
+    private int buy_count = 0;
 
     public Book() {
 

@@ -66,8 +66,16 @@ public class BookService {
         editedBook.setJumlah_halaman(book.getJumlah_halaman());
         editedBook.setFoto_cover(book.getFoto_cover());
         editedBook.setKategori(book.getKategori());
+        editedBook.setBuy_count(book.getBuy_count());
 
         return bookRepository.save(editedBook);
+    }
+
+    public Book bookBought(UUID id, int quantity){
+        Book boughtBook = bookRepository.getReferenceById(id);
+        boughtBook.setBuy_count(boughtBook.getBuy_count() + quantity);
+
+        return bookRepository.save(boughtBook);
     }
 
 }
