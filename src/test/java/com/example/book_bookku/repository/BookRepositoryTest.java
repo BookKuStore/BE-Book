@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 //@SpringBootTest
 //@SpringJUnitConfig
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BookRepositoryTest {
 
     @Autowired
