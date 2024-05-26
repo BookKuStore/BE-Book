@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -41,7 +42,6 @@ public class SearchAllServiceTest {
 
     @BeforeEach
     void setUp() {
-
         books = new ArrayList<>();
 
         Book book1 = Book.Builder.builder()
@@ -55,9 +55,7 @@ public class SearchAllServiceTest {
                 .setTanggalTerbit(LocalDate.of(2001, Month.APRIL, 3))
                 .setIsbn("1234567890123")
                 .setJumlahHalaman(100)
-                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                        "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
-                        "ef8303f56910954f5e076")
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Fiksi")
                 .build();
 
@@ -72,9 +70,7 @@ public class SearchAllServiceTest {
                 .setTanggalTerbit(LocalDate.of(2002, Month.APRIL, 3))
                 .setIsbn("1234567890234")
                 .setJumlahHalaman(200)
-                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                        "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
-                        "ef8303f56910954f5e076")
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Petualangan")
                 .build();
 
@@ -89,9 +85,7 @@ public class SearchAllServiceTest {
                 .setTanggalTerbit(LocalDate.of(2003, Month.APRIL, 3))
                 .setIsbn("1234567890345")
                 .setJumlahHalaman(300)
-                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561." +
-                        "jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986" +
-                        "ef8303f56910954f5e076")
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Pendidikan")
                 .build();
 
@@ -102,7 +96,7 @@ public class SearchAllServiceTest {
         searchAllService.setNextHandler(keywordService);
         keywordService.setNextHandler(keywordWithFilterService);
 
-        when(bookRepository.findAll()).thenReturn(books);
+        when(bookRepository.findAll(any(Sort.class))).thenReturn(books);
     }
 
     @Test
@@ -112,21 +106,43 @@ public class SearchAllServiceTest {
 
     @Test
     void testKeywordIsNull() {
-        for (Book book : books) {
-            bookRepository.save(book);
-        }
+        searchAllService.setKeyword("");
+        searchAllService.setFilterBy("");
+        searchAllService.setSortBy("judul");
+        searchAllService.setSortDir("asc");
 
-        searchAllService.setKeyword(null);
-        assertEquals(books, bookRepository.findAll());
+        List<Book> result = searchAllService.handleRequest();
+        verify(bookRepository, times(1)).findAll(any(Sort.class));
+        assertEquals(books, result);
     }
 
     @Test
     void testKeywordIsEmpty() {
-        for (Book book : books) {
-            bookRepository.save(book);
-        }
-
         searchAllService.setKeyword("");
-        assertEquals(books, bookRepository.findAll());
+        searchAllService.setFilterBy("");
+        searchAllService.setSortBy("judul");
+        searchAllService.setSortDir("asc");
+
+        List<Book> result = searchAllService.handleRequest();
+        verify(bookRepository, times(1)).findAll(any(Sort.class));
+        assertEquals(books, result);
+    }
+
+    @Test
+    void testKeywordIsNotEmpty() {
+        searchAllService.setKeyword("buku");
+        searchAllService.setFilterBy("");
+        searchAllService.setSortBy("judul");
+        searchAllService.setSortDir("asc");
+
+        when(keywordService.handleRequest()).thenReturn(books);
+
+        List<Book> result = searchAllService.handleRequest();
+        assertEquals(books, result);
+        verify(keywordService, times(1)).setKeyword("buku");
+        verify(keywordService, times(1)).setFilterBy("");
+        verify(keywordService, times(1)).setSortBy("judul");
+        verify(keywordService, times(1)).setSortDir("asc");
+        verify(keywordService, times(1)).handleRequest();
     }
 }
