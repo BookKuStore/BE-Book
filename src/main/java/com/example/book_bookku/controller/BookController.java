@@ -5,6 +5,7 @@ import com.example.book_bookku.service.BookService;
 import com.example.book_bookku.service.book_list_services.KeywordService;
 import com.example.book_bookku.service.book_list_services.KeywordWithFilterService;
 import com.example.book_bookku.service.book_list_services.SearchAllService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+@CrossOrigin
 @RestController
-@RequestMapping(path = "book/")
+@RequestMapping(path = "book")
 public class BookController {
     private final BookService bookService;
     private final KeywordService keywordService;
@@ -52,11 +54,11 @@ public class BookController {
         ResponseEntity responseEntity = null;
 
         try {
-            CompletableFuture<List<Book>> books = bookService.getAllBooks();
+            List<Book> books = bookService.getAllBooks();
 
             response.put("status", HttpStatus.OK);
             response.put("message", "Success");
-            response.put("data", books.get());
+            response.put("data", books);
             responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             System.out.println("Error in get all books!");
@@ -71,11 +73,11 @@ public class BookController {
         ResponseEntity responseEntity = null;
 
         try {
-            CompletableFuture<Optional<Book>> book = bookService.getBookById(id);
+            Optional<Book> book = bookService.getBookById(id);
 
             response.put("status", HttpStatus.OK);
             response.put("message", "Success");
-            response.put("data", book.get());
+            response.put("data", book);
             responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
             System.out.println("Error in getting book!");
@@ -100,6 +102,15 @@ public class BookController {
     public String updateBook(@PathVariable UUID id, @RequestBody Book book){
         Book newBook = bookService.editBook(id, book);
         return "success";
+    }
+
+    @PostMapping("/buy")
+    public Book bookBought(@RequestBody ObjectNode objectNode){
+        UUID id = UUID.fromString(objectNode.get("id").asText());
+        int quantity = objectNode.get("quantity").asInt();
+
+        Book book = bookService.bookBought(id, quantity);
+        return book;
     }
 
     @GetMapping("/list")

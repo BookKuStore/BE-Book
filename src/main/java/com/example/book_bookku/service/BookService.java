@@ -21,18 +21,17 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    @Async
-    public CompletableFuture<List<Book>> getAllBooks() throws InterruptedException {
+
+    public List<Book> getAllBooks() throws InterruptedException {
         List<Book> bookList = bookRepository.findAll();
 
-        return CompletableFuture.completedFuture(bookList);
+        return bookList;
     }
 
-    @Async
-    public CompletableFuture<Optional<Book>> getBookById(UUID id){
+    public Optional<Book> getBookById(UUID id){
         Optional<Book> book = bookRepository.findById(id);
 
-        return CompletableFuture.completedFuture(book);
+        return book;
     }
 
     public Book createBook(Book book){
@@ -40,6 +39,12 @@ public class BookService {
     }
 
     public void deleteBookById(UUID id){
+        Book book = bookRepository.getReferenceById(id);
+
+        if(book.getBuy_count() != 0 ){
+            throw new Error("Cannot delete book");
+        }
+
         bookRepository.deleteById(id);
     }
 
@@ -54,8 +59,16 @@ public class BookService {
         editedBook.setJumlah_halaman(book.getJumlah_halaman());
         editedBook.setFoto_cover(book.getFoto_cover());
         editedBook.setKategori(book.getKategori());
+        editedBook.setBuy_count(book.getBuy_count());
 
         return bookRepository.save(editedBook);
+    }
+
+    public Book bookBought(UUID id, int quantity){
+        Book boughtBook = bookRepository.getReferenceById(id);
+        boughtBook.setBuy_count(boughtBook.getBuy_count() + quantity);
+
+        return bookRepository.save(boughtBook);
     }
 
 }
