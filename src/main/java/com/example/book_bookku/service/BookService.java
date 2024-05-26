@@ -14,12 +14,12 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 public class BookService {
-    private final BookRepository bookRepository;
+    private BookRepository bookRepository;
 
-    @Autowired
-    public BookService(BookRepository bookRepository){
-        this.bookRepository = bookRepository;
-    }
+//    @Autowired
+//    public BookService(BookRepository bookRepository){
+//        this.bookRepository = bookRepository;
+//    }
 
 
     public List<Book> getAllBooks() throws InterruptedException {
