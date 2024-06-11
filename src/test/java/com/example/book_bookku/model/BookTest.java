@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BookTest {
 
-    private Book book;
+    private Book book1;
+    private Book book2;
 
     @BeforeEach
     public void setUp() {
-        // Membuat objek buku baru untuk setiap pengujian
-        book = Book.Builder.builder()
+        book1 = Book.Builder.builder()
                 .setId(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"))
                 .setJudul("Judul Buku")
                 .setPenulis("Penulis Buku")
@@ -32,6 +32,110 @@ public class BookTest {
                 .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
                 .setKategori("Fiksi")
                 .build();
+
+        book2 = Book.Builder.builder()
+                .setId(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"))
+                .setJudul("Judul Buku")
+                .setPenulis("Penulis Buku")
+                .setPenerbit("Penerbit Buku")
+                .setDeskripsi("Deskripsi Buku")
+                .setHarga(20)
+                .setStok(100)
+                .setTanggalTerbit(LocalDate.of(2000, Month.APRIL, 20))
+                .setIsbn("9780141199078")
+                .setJumlahHalaman(300)
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
+                .setKategori("Fiksi")
+                .build();
+    }
+
+    @Test
+    public void testEqualsReflexive() {
+        assertEquals(book1, book1, "Equals should be reflexive");
+    }
+
+    @Test
+    public void testEqualsSymmetric() {
+        assertEquals(book1, book2, "Equals should be symmetric");
+        assertEquals(book2, book1, "Equals should be symmetric");
+    }
+
+    @Test
+    public void testEqualsTransitive() {
+        Book book3 = Book.Builder.builder()
+                .setId(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"))
+                .setJudul("Judul Buku")
+                .setPenulis("Penulis Buku")
+                .setPenerbit("Penerbit Buku")
+                .setDeskripsi("Deskripsi Buku")
+                .setHarga(20)
+                .setStok(100)
+                .setTanggalTerbit(LocalDate.of(2000, Month.APRIL, 20))
+                .setIsbn("9780141199078")
+                .setJumlahHalaman(300)
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
+                .setKategori("Fiksi")
+                .build();
+
+        assertEquals(book1, book2, "Equals should be transitive");
+        assertEquals(book2, book3, "Equals should be transitive");
+        assertEquals(book1, book3, "Equals should be transitive");
+    }
+
+    @Test
+    public void testEqualsConsistent() {
+        assertEquals(book1, book2, "Equals should be consistent");
+        assertEquals(book1, book2, "Equals should be consistent");
+    }
+
+    @Test
+    public void testEqualsNull() {
+        assertNotEquals(book1, null, "Equals should return false for null comparison");
+    }
+
+    @Test
+    public void testEqualsDifferentClass() {
+        assertNotEquals(book1, "Some String", "Equals should return false for different class comparison");
+    }
+
+    @Test
+    public void testEqualsDifferentId() {
+        Book bookWithDifferentId = Book.Builder.builder()
+                .setId(UUID.fromString("d7c8f81e-6c77-4f5e-bf8d-c1eaa4eafb2e"))
+                .setJudul("Judul Buku")
+                .setPenulis("Penulis Buku")
+                .setPenerbit("Penerbit Buku")
+                .setDeskripsi("Deskripsi Buku")
+                .setHarga(20)
+                .setStok(100)
+                .setTanggalTerbit(LocalDate.of(2000, Month.APRIL, 20))
+                .setIsbn("9780141199078")
+                .setJumlahHalaman(300)
+                .setFotoCover("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076")
+                .setKategori("Fiksi")
+                .build();
+
+        assertNotEquals(book1, bookWithDifferentId, "Equals should return false for different id comparison");
+    }
+
+    @Test
+    public void testEqualsDifferentFields() {
+        Book bookWithDifferentFields = Book.Builder.builder()
+                .setId(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"))
+                .setJudul("Judul Berbeda")
+                .setPenulis("Penulis Berbeda")
+                .setPenerbit("Penerbit Berbeda")
+                .setDeskripsi("Deskripsi Berbeda")
+                .setHarga(30)
+                .setStok(200)
+                .setTanggalTerbit(LocalDate.of(2010, Month.MARCH, 15))
+                .setIsbn("9781234567890")
+                .setJumlahHalaman(400)
+                .setFotoCover("https://example.com/berbeda.jpg")
+                .setKategori("Non-Fiksi")
+                .build();
+
+        assertNotEquals(book1, bookWithDifferentFields, "Equals should return false for different field values comparison");
     }
 
     @Test
@@ -79,7 +183,6 @@ public class BookTest {
 
     @Test
     public void testDefaultConstructor() {
-        // Memastikan konstruktor default berfungsi dengan benar
         Book defaultBook = new Book();
         assertNotNull(defaultBook.getId());
         assertNull(defaultBook.getJudul());
@@ -101,7 +204,6 @@ public class BookTest {
         Book book = new Book();
         book.setJudul("Judul Buku");
 
-        // Memeriksa apakah objek sama dengan dirinya sendiri
         assertEquals(book, book);
         assertEquals(book.hashCode(), book.hashCode());
     }
@@ -142,24 +244,22 @@ public class BookTest {
 
     @Test
     public void testBookConstructorWithAllArguments() {
-        // Memastikan constructor dengan semua argumen berfungsi dengan benar
-        assertEquals(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"), book.getId());
-        assertEquals("Judul Buku", book.getJudul());
-        assertEquals("Penulis Buku", book.getPenulis());
-        assertEquals("Penerbit Buku", book.getPenerbit());
-        assertEquals("Deskripsi Buku", book.getDeskripsi());
-        assertEquals(20, book.getHarga());
-        assertEquals(100, book.getStok());
-        assertEquals(LocalDate.of(2000, Month.APRIL, 20), book.getTanggal_terbit());
-        assertEquals("9780141199078", book.getIsbn());
-        assertEquals(300, book.getJumlah_halaman());
-        assertEquals("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076", book.getFoto_cover());
-        assertEquals("Fiksi", book.getKategori());
+        assertEquals(UUID.fromString("c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0"), book1.getId());
+        assertEquals("Judul Buku", book1.getJudul());
+        assertEquals("Penulis Buku", book1.getPenulis());
+        assertEquals("Penerbit Buku", book1.getPenerbit());
+        assertEquals("Deskripsi Buku", book1.getDeskripsi());
+        assertEquals(20, book1.getHarga());
+        assertEquals(100, book1.getStok());
+        assertEquals(LocalDate.of(2000, Month.APRIL, 20), book1.getTanggal_terbit());
+        assertEquals("9780141199078", book1.getIsbn());
+        assertEquals(300, book1.getJumlah_halaman());
+        assertEquals("https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076", book1.getFoto_cover());
+        assertEquals("Fiksi", book1.getKategori());
     }
 
     @Test
     public void testBookConstructorWithPartialArguments() {
-        // Memastikan constructor dengan beberapa argumen berfungsi dengan benar
         Book partialBook = Book.Builder.builder()
                 .setJudul("Judul Buku")
                 .setPenulis("Penulis Buku")
@@ -189,21 +289,17 @@ public class BookTest {
 
     @Test
     public void testValidFotoCoverURL() {
-        // Memeriksa apakah tautan foto cover valid
-        assertTrue(isValidURL(book.getFoto_cover()));
+        assertTrue(isValidURL(book1.getFoto_cover()));
     }
 
     @Test
     public void testInvalidFotoCoverURL() {
-        book.setFoto_cover("not_a_valid_url");
-
-        // Memeriksa apakah tautan foto cover tidak valid
-        assertFalse(isValidURL(book.getFoto_cover()));
+        book1.setFoto_cover("not_a_valid_url");
+        assertFalse(isValidURL(book1.getFoto_cover()));
     }
 
     @Test
     public void testSettersAndGetters() {
-        // Memeriksa apakah setter dan getter yang dihasilkan oleh Lombok berfungsi dengan benar
         Book testBook = new Book();
         UUID id = UUID.randomUUID();
         testBook.setId(id);
@@ -235,16 +331,87 @@ public class BookTest {
         assertEquals(10, testBook.getBuy_count());
     }
 
-    // Metode untuk memeriksa apakah suatu string adalah URL yang valid
     private boolean isValidURL(String url) {
         try {
-            // Membuat objek URI dari string URL
             URI uri = new URI(url);
-            // Memeriksa apakah URI valid
             return uri.isAbsolute();
         } catch (URISyntaxException e) {
-            // Jika terjadi URISyntaxException, URL tidak valid
             return false;
         }
     }
+
+    @Test
+    public void testHashCodeConsistency() {
+        assertEquals(book1.hashCode(), book2.hashCode(), "Hash codes should be consistent for equal objects");
+    }
+
+    @Test
+    public void testGettersAndSetters() {
+        Book testBook = new Book();
+        UUID id = UUID.randomUUID();
+        testBook.setId(id);
+        testBook.setJudul("New Title");
+        testBook.setPenulis("New Author");
+        testBook.setPenerbit("New Publisher");
+        testBook.setDeskripsi("New Description");
+        testBook.setHarga(30);
+        testBook.setStok(50);
+        testBook.setTanggal_terbit(LocalDate.of(2021, Month.JANUARY, 1));
+        testBook.setIsbn("1234567890123");
+        testBook.setJumlah_halaman(150);
+        testBook.setFoto_cover("https://example.com/new_cover.jpg");
+        testBook.setKategori("Non-Fiction");
+        testBook.setBuy_count(10);
+
+        assertEquals(id, testBook.getId());
+        assertEquals("New Title", testBook.getJudul());
+        assertEquals("New Author", testBook.getPenulis());
+        assertEquals("New Publisher", testBook.getPenerbit());
+        assertEquals("New Description", testBook.getDeskripsi());
+        assertEquals(30, testBook.getHarga());
+        assertEquals(50, testBook.getStok());
+        assertEquals(LocalDate.of(2021, Month.JANUARY, 1), testBook.getTanggal_terbit());
+        assertEquals("1234567890123", testBook.getIsbn());
+        assertEquals(150, testBook.getJumlah_halaman());
+        assertEquals("https://example.com/new_cover.jpg", testBook.getFoto_cover());
+        assertEquals("Non-Fiction", testBook.getKategori());
+        assertEquals(10, testBook.getBuy_count());
+    }
+
+    @Test
+    public void testBuilderWithEdgeCases() {
+        Book edgeCaseBook = Book.Builder.builder()
+                .setJudul("")
+                .setPenulis(null)
+                .setPenerbit("")
+                .setDeskripsi(null)
+                .setHarga(Integer.MAX_VALUE)
+                .setStok(Integer.MIN_VALUE)
+                .setTanggalTerbit(LocalDate.of(9999, Month.DECEMBER, 31))
+                .setIsbn("")
+                .setJumlahHalaman(0)
+                .setFotoCover("")
+                .setKategori(null)
+                .build();
+
+        assertEquals("", edgeCaseBook.getJudul());
+        assertNull(edgeCaseBook.getPenulis());
+        assertEquals("", edgeCaseBook.getPenerbit());
+        assertNull(edgeCaseBook.getDeskripsi());
+        assertEquals(Integer.MAX_VALUE, edgeCaseBook.getHarga());
+        assertEquals(Integer.MIN_VALUE, edgeCaseBook.getStok());
+        assertEquals(LocalDate.of(9999, Month.DECEMBER, 31), edgeCaseBook.getTanggal_terbit());
+        assertEquals("", edgeCaseBook.getIsbn());
+        assertEquals(0, edgeCaseBook.getJumlah_halaman());
+        assertEquals("", edgeCaseBook.getFoto_cover());
+        assertNull(edgeCaseBook.getKategori());
+    }
+
+    @Test
+    public void testToStringWithDifferentValues() {
+        book1.setBuy_count(5);
+        String expectedString = "Book(id=c68d81bf-9cd6-4a51-8c5e-c5e107bfb6c0, judul=Judul Buku, penulis=Penulis Buku, penerbit=Penerbit Buku, deskripsi=Deskripsi Buku, harga=20, stok=100, tanggal_terbit=2000-04-20, isbn=9780141199078, jumlah_halaman=300, foto_cover=https://img.freepik.com/free-psd/realistic-books-illustration_23-2150583561.jpg?w=740&t=st=1714023181~exp=1714023781~hmac=7cfc30e4018496977d01faef4fe928aabc8b2341986ef8303f56910954f5e076, kategori=Fiksi, buy_count=5)";
+        assertEquals(expectedString, book1.toString());
+    }
+
 }
