@@ -5,11 +5,13 @@ import com.example.book_bookku.repository.BookRepository;
 import com.example.book_bookku.service.book_list_services.KeywordService;
 import com.example.book_bookku.service.book_list_services.KeywordWithFilterService;
 import com.example.book_bookku.service.book_list_services.SearchAllService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.data.domain.Sort;
 
@@ -24,6 +26,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @SpringJUnitConfig
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SearchAllServiceTest {
 
     @Autowired
@@ -144,5 +147,10 @@ public class SearchAllServiceTest {
         verify(keywordService, times(1)).setSortBy("judul");
         verify(keywordService, times(1)).setSortDir("asc");
         verify(keywordService, times(1)).handleRequest();
+    }
+
+    @AfterEach
+    public void tearDown(){
+        books.clear();
     }
 }

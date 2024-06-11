@@ -3,11 +3,13 @@ package com.example.book_bookku.service.book_list_service_test;
 import com.example.book_bookku.model.Book;
 import com.example.book_bookku.repository.BookRepository;
 import com.example.book_bookku.service.book_list_services.KeywordWithFilterService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.data.domain.Sort;
 
@@ -22,6 +24,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @SpringJUnitConfig
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class KeywordWithFilterServiceTest {
 
     @Autowired
@@ -161,5 +164,10 @@ public class KeywordWithFilterServiceTest {
 
         List<Book> result = keywordWithFilterService.handleRequest();
         assertNull(result);
+    }
+
+    @AfterEach
+    public void tearDown(){
+        books.clear();
     }
 }

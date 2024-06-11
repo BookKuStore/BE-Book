@@ -4,88 +4,138 @@ import com.example.book_bookku.model.Book;
 import com.example.book_bookku.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class BookServiceTest {
 
-    private final BookRepository bookRepository;
+    @InjectMocks
+    private BookService bookService;
 
-    private final BookService bookService;
-
-    private Book book1;
-    private UUID book1Id;
-
-    private Book book2;
-    private UUID book2Id;
-
-    @Autowired
-    public BookServiceTest(BookService bookService, BookRepository bookRepository) {
-        this.bookService = bookService;
-        this.bookRepository = bookRepository;
-    }
+    @Mock
+    private BookRepository bookRepository;
 
     @BeforeEach
-    public void setUp() {
-        book1Id = UUID.randomUUID();
-        book1 = new Book();
-        book1.setId(book1Id);
-        book1.setBuy_count(0);
-
-        book2Id = UUID.randomUUID();
-        book2 = new Book();
-        book2.setId(book2Id);
-        book2.setBuy_count(1);
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testGetAllBooks() throws InterruptedException {
-        List<Book> books = bookService.getAllBooks();
+    void testGetAllBooks() throws InterruptedException {
+        // Arrange
+        List<Book> expectedBooks = new ArrayList<>();
+        when(bookRepository.findAll()).thenReturn(expectedBooks);
 
-        assertNotNull(books);
-        assertEquals(true, !books.isEmpty());
+        // Act
+        List<Book> actualBooks = bookService.getAllBooks();
+
+        // Assert
+        assertEquals(expectedBooks, actualBooks);
+        verify(bookRepository).findAll();
     }
 
     @Test
-    public void testGetBookById() {
-        assertTrue(true);
+    void testGetBookById() {
+        // Arrange
+        UUID bookId = UUID.randomUUID();
+        Book expectedBook = new Book();
+        expectedBook.setId(bookId);
+        when(bookRepository.findById(bookId)).thenReturn(Optional.of(expectedBook));
+
+        // Act
+        Optional<Book> actualBook = bookService.getBookById(bookId);
+
+        // Assert
+        assertTrue(actualBook.isPresent());
+        assertEquals(expectedBook, actualBook.get());
+        verify(bookRepository).findById(bookId);
     }
 
     @Test
-    public void testCreateBook() {
-        assertTrue(true);
+    void testCreateBook() {
+        // Arrange
+        Book book = new Book();
+        when(bookRepository.save(book)).thenReturn(book);
+
+        // Act
+        Book createdBook = bookService.createBook(book);
+
+        // Assert
+        assertEquals(book, createdBook);
+        verify(bookRepository).save(book);
     }
 
     @Test
-    public void testDeleteBookById() {
-        assertTrue(true);
+    void testDeleteBookById() {
+        // Arrange
+        UUID bookId = UUID.randomUUID();
+        Book book = new Book();
+        book.setId(bookId);
+        when(bookRepository.getReferenceById(bookId)).thenReturn(book);
+
+        // Act
+        bookService.deleteBookById(bookId);
+
+        // Assert
+        verify(bookRepository).deleteById(bookId);
     }
 
     @Test
-    public void testEditBook() {
-        assertTrue(true);
+    void testDeleteBookByIdThrowsError() {
+        // Arrange
+        UUID bookId = UUID.randomUUID();
+        Book book = new Book();
+        book.setId(bookId);
+        book.setBuy_count(1);
+        when(bookRepository.getReferenceById(bookId)).thenReturn(book);
+
+        // Act & Assert
+        assertThrows(Error.class, () -> bookService.deleteBookById(bookId));
+        verify(bookRepository, never()).deleteById(bookId);
     }
 
     @Test
-    public void testBookBought() {
-        assertTrue(true);
+    void testEditBook() {
+        // Arrange
+        UUID bookId = UUID.randomUUID();
+        Book book = new Book();
+        Book editedBook = new Book();
+        editedBook.setId(bookId);
+        when(bookRepository.getReferenceById(bookId)).thenReturn(editedBook);
+        when(bookRepository.save(editedBook)).thenReturn(editedBook);
+
+        // Act
+        Book result = bookService.editBook(bookId, book);
+
+        // Assert
+        assertEquals(editedBook, result);
+        verify(bookRepository).getReferenceById(bookId);
+        verify(bookRepository).save(editedBook);
+    }
+
+    @Test
+    void testBookBought() {
+        // Arrange
+        UUID bookId = UUID.randomUUID();
+        int quantity = 2;
+        Book book = new Book();
+        book.setId(bookId);
+        book.setBuy_count(0);
+        when(bookRepository.getReferenceById(bookId)).thenReturn(book);
+        when(bookRepository.save(book)).thenReturn(book);
+
+        // Act
+        Book boughtBook = bookService.bookBought(bookId, quantity);
+
+        // Assert
+        assertEquals(quantity, boughtBook.getBuy_count());
+        verify(bookRepository).getReferenceById(bookId);
+        verify(bookRepository).save(boughtBook);
     }
 }
